@@ -26,9 +26,11 @@ class UserAdapter : PagingDataAdapter<UserEntity, UserAdapter.ViewHolder>(UserDi
         holder.bind(getItem(position)
             ?: UserEntity(
                 id = "-1",
-                name = "e",
-                email = "f",
-                photoUrl = "e",
+                firstName = "loading...",
+                secondName = "",
+                lastName = "",
+                email = "",
+                photoUrl = "",
             )
         )
     }
@@ -37,7 +39,7 @@ class UserAdapter : PagingDataAdapter<UserEntity, UserAdapter.ViewHolder>(UserDi
         private val binding: VolunteerCardBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserEntity){
-            binding.title.text = item.name;
+            binding.title.text = item.firstName + " " + item.secondName + " " + item.lastName;
             binding.discription.text = item.email
             Picasso.get().load(item.photoUrl).resize(64,64)
                 .centerCrop()

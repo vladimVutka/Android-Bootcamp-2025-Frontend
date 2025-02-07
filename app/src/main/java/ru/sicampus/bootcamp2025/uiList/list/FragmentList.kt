@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2025.uiList.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +22,8 @@ class FragmentList : Fragment(R.layout.volunteer_list)
         _viewBinding = VolunteerListBinding.bind(view)
 
         val adapter = UserAdapter()
-        viewBinding.refresh.setOnClickListener { adapter.refresh() }
+        viewBinding.refresh.setOnClickListener { Log.d("ButtonClick", "Кнопка нажата")
+            viewBinding.refresh.visibility = View.GONE }
         viewBinding.content.adapter = adapter
 
         viewModel.listState.collectionWithLifecycle(this) { data ->

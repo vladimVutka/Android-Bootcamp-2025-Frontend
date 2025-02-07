@@ -17,87 +17,89 @@ import ru.sicampus.bootcamp2025.R
 import ru.sicampus.bootcamp2025.data.auth.AuthNetworkDataSource
 import ru.sicampus.bootcamp2025.data.auth.AuthRepoImpl
 import ru.sicampus.bootcamp2025.data.auth.AuthStorageDataCource
+import ru.sicampus.bootcamp2025.domain.auth.IsUserExistUseCase
 import ru.sicampus.bootcamp2025.domain.auth.LoginUseCase
 import ru.sicampus.bootcamp2025.domain.auth.RegisterUserUseCase
-import ru.sicampus.bootcamp2025.domain.auth.IsUserExistUseCase
 
-class AuthViewModel (
+class AuthViewModel(
     application: Application,
     private val isUserExistUseCase: IsUserExistUseCase,
     private val loginUseCase: LoginUseCase,
-    private val registerUserUseCase : RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
 ) : AndroidViewModel(application = application) {
-
     private val _state = MutableStateFlow<State>(getStateShow())
-    public val state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     private val _action = Channel<Action>(
         capacity = Channel.BUFFERED,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
-    public val action = _action.receiveAsFlow()
+    val action = _action.receiveAsFlow()
 
-    private var isNewUser : Boolean? = null
+    private var isNewUser: Boolean? = null
 
-    init{
+    fun changeLogin() {
         viewModelScope.launch {
-            updateState();
+            isNewUser = null
+            updateState()
         }
     }
 
     fun clickNext(
         login: String,
         password: String,
-        ){
+    ) {
         viewModelScope.launch {
             _state.emit(State.Loading)
-            when (isNewUser){
-                true ->
+            when (isNewUser) {
+                true -> {
                     registerUserUseCase(login, password).fold(
-                    onSuccess = { openList() },
-                    onFailure = {
-                            error -> updateState(error)}
-                )
-                false ->
+                        onSuccess = { openList() },
+                        onFailure = { error ->
+                            updateState(error)
+                        }
+                    )
+                }
+                false -> {
                     loginUseCase(login, password).fold(
                         onSuccess = { openList() },
-                        onFailure = {
-                                error -> updateState(error)}
+                        onFailure = { error ->
+                            updateState(error)
+                        }
                     )
-
+                }
                 null -> {
                     isUserExistUseCase(login).fold(
-                        onSuccess = {
-                            isExist ->
+                        onSuccess = { isExist ->
                             isNewUser = isExist
                             updateState()
                         },
-                        onFailure = {
-                            error -> updateState(error)}
+                        onFailure = { error ->
+                            updateState(error)
+                        }
                     )
                 }
             }
         }
-
     }
 
-    private fun openList(){
+    private fun openList() {
         viewModelScope.launch { _action.send(Action.GoToList) }
     }
 
-private suspend fun updateState(error: Throwable? = null){
-    _state.emit(getStateShow(error))
-}
+    private suspend fun updateState(error: Throwable? = null) {
+        _state.emit(getStateShow(error))
+    }
 
     private fun getStateShow(error: Throwable? = null): State.Show {
         return State.Show(
-            titleText = when(isNewUser){
+            titleText = when (isNewUser) {
                 true -> getApplication<Application>().getString(R.string.sign_up)
                 false -> getApplication<Application>().getString(R.string.sign_in)
                 null -> getApplication<Application>().getString(R.string.hello)
             },
             showPassword = isNewUser != null,
-            buttonText = when(isNewUser){
+            buttonText = when (isNewUser) {
                 true -> getApplication<Application>().getString(R.string.sign_up)
                 false -> getApplication<Application>().getString(R.string.sign_in)
                 null -> getApplication<Application>().getString(R.string.next)
@@ -121,10 +123,9 @@ private suspend fun updateState(error: Throwable? = null){
     }
 
     companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-
                 val application = extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]!!
                 val authRepoImpl = AuthRepoImpl(
                     authStorageDataSource = AuthStorageDataCource,

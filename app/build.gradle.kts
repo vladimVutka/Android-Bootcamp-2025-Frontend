@@ -55,4 +55,8 @@ dependencies {
     implementation(libs.picasso)
     implementation(libs.play.services.maps.v1802)
     implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(libs.testng)
+    androidTestImplementation(libs.testng)
 }

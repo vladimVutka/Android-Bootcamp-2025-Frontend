@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2025.uiList.auth
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
@@ -20,8 +21,7 @@ class AuthFragment : Fragment(R.layout.authorization)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _viewBinding = AuthorizationBinding.bind(view)
-
-        viewBinding.logInBtn.setOnClickListener( ){
+        viewBinding.logInBtn.setOnClickListener {
             viewModel.clickNext(viewBinding.enterLogin.text.toString(), viewBinding.enterPassword.text.toString())
         }
 

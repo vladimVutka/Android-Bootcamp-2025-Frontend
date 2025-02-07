@@ -18,7 +18,9 @@ class UserRepoImpl(
             pagingDto.content?.mapNotNull{ dto ->
                 UserEntity(
                     id = dto.id ?: return@mapNotNull null,
-                    name = dto.name ?: return@mapNotNull null,
+                    firstName = dto.firlstName ?: return@mapNotNull null,
+                    secondName = dto.secondName ?: return@mapNotNull null,
+                    lastName = dto.lastName ?: return@mapNotNull null,
                     email = dto.email ?: return@mapNotNull null,
                     photoUrl = dto.photoUrl ?: return@mapNotNull null,
                 )} ?: return Result.failure(IllegalStateException("List parse error"))

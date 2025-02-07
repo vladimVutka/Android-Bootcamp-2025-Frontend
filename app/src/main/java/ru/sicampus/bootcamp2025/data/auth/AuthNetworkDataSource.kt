@@ -38,7 +38,7 @@ object AuthNetworkDataSource {
 
     suspend fun register(login: String, password: String): Result<Unit> = withContext(Dispatchers.IO){
         runCatching {
-            val result = Network.client.get("https://10.0.2.2:9000/api/persons/register"){
+            val result = Network.client.get("https://10.0.2.2:9000/api/1.0/volunteer/register"){
                 contentType(ContentType.Application.Json)
                 setBody(
                     AuthRegistrerDto(

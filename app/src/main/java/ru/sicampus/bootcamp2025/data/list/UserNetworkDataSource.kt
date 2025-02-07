@@ -20,7 +20,7 @@ class UserNetworkDataSource() {
         token: String
     ): Result<UserListPagingDto> = withContext(Dispatchers.IO){
         runCatching {
-            val result = Network.client.get("http://10.0.2.2:9000/api/persons/paginated?page=$pageNumb&size=$pageSize"){
+            val result = Network.client.get("http://10.0.2.2:9000/api/1.0/volunteer/paginated?page=$pageNumb&size=$pageSize"){
                 headers {
                     append(
                         HttpHeaders.Authorization,

@@ -52,5 +52,7 @@
     <string name="list">Список волонтёров\n</string>
     <string name="next">Next\n</string>
     <string name="re">123\n</string>
+    <string name="gier">gier</string>
+    <string name="login">Войти</string>
 
 </resources>
