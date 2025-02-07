@@ -17,6 +17,7 @@
     <string name="org_description">Центр инициативных и трудолюбивых волонтеров</string>
     <string name="org_active_vol">Активных волонтеров: </string>
     <string name="org_number_of_vol">7</string>
+    <string name="org_adress">ул. Пушкина, 39к2</string>
 
     <string name="app_name">Android-Bootcamp-2025-Frontend</string>
     <string name="welcome">Добро пожаловать!</string>
@@ -54,5 +55,6 @@
     <string name="re">123\n</string>
     <string name="gier">gier</string>
     <string name="login">Войти</string>
+    <string name="refresh">Обновить страницу</string>
 
 </resources>
